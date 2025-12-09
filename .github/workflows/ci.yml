@@ -1,0 +1,52 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'release/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout код татах
+        uses: actions/checkout@v4
+
+      - name: Java JDK 17 тохируулах
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Maven хамаарлууд татах
+        run: mvn dependency:go-offline
+
+      - name: Код угсрах
+        run: mvn clean compile
+
+      - name: Checkstyle шалгах
+        run: mvn checkstyle:check
+
+      - name: JUnit тест ажиллуулах
+        run: mvn test
+
+      - name: JaCoCo coverage шалгах (100%)
+        run: mvn jacoco:check
+
+      - name: JaCoCo тайлан үүсгэх
+        run: mvn jacoco:report
+
+      - name: Coverage тайлан байршуулах
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
