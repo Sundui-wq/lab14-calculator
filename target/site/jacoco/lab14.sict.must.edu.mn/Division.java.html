@@ -11,13 +11,19 @@
      * @param a Хуваагдах тоо
      * @param b Хуваагч тоо
      * @return Ногдол
-     * @throws IllegalArgumentException Тэгээр хуваах оролдлого
+     * @throws IllegalArgumentException Тэгээр хуваах эсвэл буруу утга
      */
     public double divide(double a, double b) {
 <span class="fc bfc" id="L17" title="All 2 branches covered.">        if (b == 0.0) {</span>
 <span class="fc" id="L18">            throw new IllegalArgumentException(&quot;Тэгээр хуваах боломжгүй&quot;);</span>
         }
-<span class="fc" id="L20">        return a / b;</span>
+<span class="fc bfc" id="L20" title="All 4 branches covered.">        if (Double.isNaN(a) || Double.isNaN(b)) {</span>
+<span class="fc" id="L21">            throw new IllegalArgumentException(&quot;NaN утга хүлээн авах боломжгүй&quot;);</span>
+        }
+<span class="fc bfc" id="L23" title="All 4 branches covered.">        if (Double.isInfinite(a) || Double.isInfinite(b)) {</span>
+<span class="fc" id="L24">            throw new IllegalArgumentException(&quot;Infinity утга хүлээн авах боломжгүй&quot;);</span>
+        }
+<span class="fc" id="L26">        return a / b;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
